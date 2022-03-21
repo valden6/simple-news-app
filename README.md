@@ -10,8 +10,9 @@ with cells composed of an image, a title and the source.
 - A redirection system to the full article page.
 - A search system by title, source or categories
 
-Translated with www.DeepL.com/Translator (free version)
-
 ## Version
+### [1.0.1] 
+Minor bug fixes
+
 ### [1.0.0] 
 Initialization of the repository + App creation
