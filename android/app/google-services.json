@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "604704085493",
+    "project_id": "test-technique-appsolute",
+    "storage_bucket": "test-technique-appsolute.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604704085493:android:3582c57e25da5440a87cbc",
+        "android_client_info": {
+          "package_name": "com.bozon.guillaume.test.technique.appsolute"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "604704085493-07191tner307fe4t4ctkbqtrk3jkt763.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTe27zHyBXXEW3iCJYT8pArsqeINYA3ps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "604704085493-07191tner307fe4t4ctkbqtrk3jkt763.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
