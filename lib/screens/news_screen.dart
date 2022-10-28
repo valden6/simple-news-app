@@ -8,13 +8,13 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:like_button/like_button.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:test_technique/animations/animation_setting.dart';
-import 'package:test_technique/animations/slide_top_route.dart';
-import 'package:test_technique/models/news.dart';
-import 'package:test_technique/models/source.dart';
-import 'package:test_technique/screens/news_detail_screen.dart';
-import 'package:test_technique/services/news_service.dart';
-import 'package:test_technique/services/storage_service.dart';
+import 'package:simple_news_app/animations/animation_setting.dart';
+import 'package:simple_news_app/animations/slide_top_route.dart';
+import 'package:simple_news_app/models/news.dart';
+import 'package:simple_news_app/models/source.dart';
+import 'package:simple_news_app/screens/news_detail_screen.dart';
+import 'package:simple_news_app/services/news_service.dart';
+import 'package:simple_news_app/services/storage_service.dart';
 
 class NewsScreen extends StatefulWidget {
 

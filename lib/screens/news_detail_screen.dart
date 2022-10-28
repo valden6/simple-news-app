@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:test_technique/animations/swipe_back.dart';
-import 'package:test_technique/models/news.dart';
+import 'package:simple_news_app/animations/swipe_back.dart';
+import 'package:simple_news_app/models/news.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NewsDetailScreen extends StatefulWidget {

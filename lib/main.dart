@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:test_technique/app.dart';
-import 'package:test_technique/models/news.dart';
+import 'package:simple_news_app/app.dart';
+import 'package:simple_news_app/models/news.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

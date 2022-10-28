@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:test_technique/models/news.dart';
+import 'package:simple_news_app/models/news.dart';
 
 class StorageService {
 

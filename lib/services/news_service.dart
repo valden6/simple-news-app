@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:test_technique/environment.dart';
-import 'package:test_technique/models/news.dart';
-import 'package:test_technique/models/source.dart';
+import 'package:simple_news_app/environment.dart';
+import 'package:simple_news_app/models/news.dart';
+import 'package:simple_news_app/models/source.dart';
 
 class NewsService {
 

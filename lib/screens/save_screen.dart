@@ -6,10 +6,10 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:test_technique/animations/slide_top_route.dart';
-import 'package:test_technique/models/news.dart';
-import 'package:test_technique/screens/news_detail_screen.dart';
-import 'package:test_technique/services/storage_service.dart';
+import 'package:simple_news_app/animations/slide_top_route.dart';
+import 'package:simple_news_app/models/news.dart';
+import 'package:simple_news_app/screens/news_detail_screen.dart';
+import 'package:simple_news_app/services/storage_service.dart';
 
 class SaveScreen extends StatefulWidget {
 

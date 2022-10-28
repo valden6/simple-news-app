@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:test_technique/screens/news_screen.dart';
-import 'package:test_technique/screens/save_screen.dart';
+import 'package:simple_news_app/screens/news_screen.dart';
+import 'package:simple_news_app/screens/save_screen.dart';
 
 class App extends StatefulWidget {
   

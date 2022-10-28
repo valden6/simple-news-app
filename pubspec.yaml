@@ -1,5 +1,5 @@
-name: test_technique
-description: A new Flutter project.
+name: simple_news_app
+description: It is an application that gathers all the information from various media 
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
