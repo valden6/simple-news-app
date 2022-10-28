@@ -11,6 +11,8 @@ with cells composed of an image, a title and the source.
 - A search system by title, source or categories
 
 ## Version
+### [1.1.0] 
+Upgrading project to flutter 3.3.6 + Upgrading all dependencies + News service refactoring + Design updated + Bug fixes and improvments
 ### [1.0.1] 
 Minor bug fixes
 

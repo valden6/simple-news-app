@@ -8,6 +8,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:like_button/like_button.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:test_technique/animations/animation_setting.dart';
 import 'package:test_technique/animations/slide_top_route.dart';
 import 'package:test_technique/models/news.dart';
 import 'package:test_technique/models/source.dart';
@@ -16,14 +17,16 @@ import 'package:test_technique/services/news_service.dart';
 import 'package:test_technique/services/storage_service.dart';
 
 class NewsScreen extends StatefulWidget {
+
   const NewsScreen({ Key? key }) : super(key: key);
 
   @override
   State<NewsScreen> createState() => _NewsScreenState();
 }
 
-class _NewsScreenState extends State<NewsScreen> {
+class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMixin {
 
+  bool keepAlive = true;
   List<News> newsList = [];
   List<Source> sourceList = [];
   Source? sourceSelected;
@@ -34,6 +37,10 @@ class _NewsScreenState extends State<NewsScreen> {
   TextEditingController searchController = TextEditingController();
   bool isSearching = false;
   final RefreshController refreshController = RefreshController();
+  bool animation = false;
+
+  @override
+  bool get wantKeepAlive => keepAlive;
 
   @override
   void initState() {
@@ -60,8 +67,13 @@ class _NewsScreenState extends State<NewsScreen> {
   }
 
   Future<void> initializeData() async{
-    await initializeNews();
-    await initializeSources();
+    if(mounted) {
+      await initializeNews();
+    }
+    if(mounted) {
+      await initializeSources();
+    }
+    animate();
   }
 
   Future<void> initializeNews() async {
@@ -103,6 +115,13 @@ class _NewsScreenState extends State<NewsScreen> {
     });
   }
 
+  Future<void> animate() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    setState(() {
+      animation = true;
+    });
+  }
+
   Future<void> searchNewsByCriteria() async {
     log("gettin all by search criteria...");
     final List<News> allNews = [];
@@ -134,7 +153,7 @@ class _NewsScreenState extends State<NewsScreen> {
 
   Future<bool> onSaveButtonTapped(News news, int index) async { 
     
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
 
     bool success = false;
 
@@ -167,27 +186,27 @@ class _NewsScreenState extends State<NewsScreen> {
     switch (criteria) {
       case "Titre":
         backgroundColorTitle = Theme.of(context).colorScheme.secondary;
-        textColorTitle = Theme.of(context).colorScheme.secondaryVariant;
-        backgroundColorSource = Theme.of(context).colorScheme.secondaryVariant;
+        textColorTitle = Theme.of(context).colorScheme.secondaryContainer;
+        backgroundColorSource = Theme.of(context).colorScheme.secondaryContainer;
         textColorSource = Theme.of(context).colorScheme.secondary;
-        backgroundColorCategory = Theme.of(context).colorScheme.secondaryVariant;
+        backgroundColorCategory = Theme.of(context).colorScheme.secondaryContainer;
         textColorCategory = Theme.of(context).colorScheme.secondary;
         break;
       case "Source":
-        backgroundColorTitle = Theme.of(context).colorScheme.secondaryVariant;
+        backgroundColorTitle = Theme.of(context).colorScheme.secondaryContainer;
         textColorTitle = Theme.of(context).colorScheme.secondary;
         backgroundColorSource = Theme.of(context).colorScheme.secondary;
-        textColorSource = Theme.of(context).colorScheme.secondaryVariant;
-        backgroundColorCategory = Theme.of(context).colorScheme.secondaryVariant;
+        textColorSource = Theme.of(context).colorScheme.secondaryContainer;
+        backgroundColorCategory = Theme.of(context).colorScheme.secondaryContainer;
         textColorCategory = Theme.of(context).colorScheme.secondary;
         break;
       default:
-        backgroundColorTitle = Theme.of(context).colorScheme.secondaryVariant;
+        backgroundColorTitle = Theme.of(context).colorScheme.secondaryContainer;
         textColorTitle = Theme.of(context).colorScheme.secondary;
-        backgroundColorSource = Theme.of(context).colorScheme.secondaryVariant;
+        backgroundColorSource = Theme.of(context).colorScheme.secondaryContainer;
         textColorSource = Theme.of(context).colorScheme.secondary;
         backgroundColorCategory = Theme.of(context).colorScheme.secondary;
-        textColorCategory = Theme.of(context).colorScheme.secondaryVariant;
+        textColorCategory = Theme.of(context).colorScheme.secondaryContainer;
         break;
     }
 
@@ -195,13 +214,14 @@ class _NewsScreenState extends State<NewsScreen> {
       children: [
         GestureDetector(
           onTap: () {
+            HapticFeedback.lightImpact();
             setState(() {
               searchController.text = "";
               criteria = "Titre";
             });
           },
           child: Card(
-            elevation: 2,
+            elevation: 0,
             color: backgroundColorTitle,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -214,13 +234,14 @@ class _NewsScreenState extends State<NewsScreen> {
         ),
         GestureDetector(
           onTap: () {
+            HapticFeedback.lightImpact();
             setState(() {
               searchController.text = "";
               criteria = "Source";
             });
           },
           child: Card(
-            elevation: 2,
+            elevation: 0,
             color: backgroundColorSource,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -233,13 +254,14 @@ class _NewsScreenState extends State<NewsScreen> {
         ),
         GestureDetector(
           onTap: () {
+            HapticFeedback.lightImpact();
             setState(() {
               searchController.text = "";
               criteria = "Catégories";
             });
           },
           child: Card(
-            elevation: 2,
+            elevation: 0,
             color: backgroundColorCategory,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -259,18 +281,19 @@ class _NewsScreenState extends State<NewsScreen> {
     String text = "";
 
     if(isSearching){
-      text = "a la une de: $query";
+      text = "A la une de: $query";
     } else if(sourceSelected != null){
-      text = "a la une de ${sourceSelected!.name}";
+      text = "A la une de ${sourceSelected!.name}";
     } else {
-      text = "a la une";
+      text = "A la une";
     }
 
-    return Text(text,style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 26,fontFamily: GoogleFonts.pacifico().fontFamily));
+    return Text(text,style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 26,fontFamily: GoogleFonts.fugazOne().fontFamily));
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: PreferredSize(
@@ -284,7 +307,7 @@ class _NewsScreenState extends State<NewsScreen> {
             child: Column(
               children: [
                 if(!isSearching)
-                  Text("Les news",style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 22,fontFamily: GoogleFonts.pacifico().fontFamily)),
+                  Text("Les news",style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 22,fontFamily: GoogleFonts.fugazOne().fontFamily)),
                 if(isSearching)
                   Column(
                     children: [
@@ -293,7 +316,7 @@ class _NewsScreenState extends State<NewsScreen> {
                         child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondaryVariant,
+                            color: Theme.of(context).colorScheme.secondaryContainer,
                             borderRadius: BorderRadius.circular(13),
                           ),
                           child: TextField(
@@ -306,16 +329,17 @@ class _NewsScreenState extends State<NewsScreen> {
                               contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(13),
-                                borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary,width: 2),
+                                borderSide: BorderSide(color: Theme.of(context).primaryColor),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(13),
-                                borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary,width: 2),
+                                borderSide: BorderSide(color: Theme.of(context).primaryColor),
                               ),
                               hintText: "Rechercher",
                               hintStyle: TextStyle(fontSize: 16,color: Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold),
                               suffixIcon: GestureDetector(
                                 onTap: () {
+                                  HapticFeedback.lightImpact();
                                   if(isSearching){
                                     setState(() {
                                       searchController.text = "";
@@ -347,6 +371,7 @@ class _NewsScreenState extends State<NewsScreen> {
           actions: [
             GestureDetector(
               onTap: () {
+                HapticFeedback.lightImpact();
                 if(isSearching && searchController.text.isNotEmpty){
                   searchNewsByCriteria();
                   setState(() {
@@ -383,142 +408,170 @@ class _NewsScreenState extends State<NewsScreen> {
           idleText: "",
         ),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              if(!isSearching)
-              Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Text("sources",style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 26,fontFamily: GoogleFonts.pacifico().fontFamily)),
-                    ),
-                  ),
-                  const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: SizedBox(
-                      height: 50,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: sourceList.length,
-                        itemBuilder: (context, index) {
-                                                    
-                          final Source source = sourceList[index];
-                          final bool isSelected = checkIsSourceSelected(source);
-
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                sourceSelected = source;
-                                initializeNewsBySource(source);
-                              });
-                            },
-                            child: Card(
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                              color: isSelected ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.secondaryVariant,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
-                                child: Text(source.name,style: TextStyle(color: isSelected ? Theme.of(context).colorScheme.secondaryVariant : Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold,fontSize: 14)),
-                              ),
-                            ),
-                          );
-                        },
+          child: AnimatedOpacity(
+            opacity: animation ? 1.0 : 0.0,
+            duration: AnimationSetting.animationFadeInOutDuration,
+            child: Column(
+              children: [
+                if(!isSearching)
+                Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Text("Sources",style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 26,fontFamily: GoogleFonts.fugazOne().fontFamily)),
                       ),
                     ),
-                  ),
-                  const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                ],
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: showDynamicTitle(),
-                ),
-              ),
-              ListView.builder(
-                itemCount: newsList.length,
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-      
-                  final News news = newsList[index];
-      
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(context, SlideTopRoute(page: NewsDetailScreen(news: news)));
-                      },
-                      child: Card(
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                        color: Theme.of(context).colorScheme.secondaryVariant,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(
-                            children: [
-                              const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(news.title.split(" - ").first,style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold,fontSize: 14)),
-                                  ),
-                                  const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-                                  LikeButton(
-                                    onTap: (bool isLiked) => onSaveButtonTapped(news,index),
-                                    size: 25,
-                                    circleColor: CircleColor(
-                                      start: Theme.of(context).colorScheme.secondaryVariant, 
-                                      end: Theme.of(context).colorScheme.secondary
-                                    ),
-                                    bubblesColor: BubblesColor(
-                                      dotPrimaryColor: Theme.of(context).colorScheme.secondary,
-                                      dotSecondaryColor: Theme.of(context).colorScheme.secondary,
-                                    ),
-                                    likeBuilder: (bool isLiked) {
-                                      return Icon(
-                                        newsSaveList[index] ? IconlyBold.bookmark : IconlyLight.bookmark,
-                                        color: Theme.of(context).colorScheme.secondary,
-                                        size: 25,
-                                      );
-                                    }
-                                  ),
-                                ],
-                              ),
-                              const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                              if(news.imgUrl != null)
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: SizedBox(
-                                    height: 150,
-                                    child: Image.network(news.imgUrl!),
-                                  ),
-                                ),
-                              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                child: Row(
-                                  children: [
-                                    Text(news.datePublished,style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold,fontSize: 14)),
-                                    const Spacer(),
-                                    Text(news.source,style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold,fontSize: 14))
-                                  ],
+                    const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: SizedBox(
+                        height: 50,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: sourceList.length,
+                          itemBuilder: (context, index) {
+                                                      
+                            final Source source = sourceList[index];
+                            final bool isSelected = checkIsSourceSelected(source);
+          
+                            return GestureDetector(
+                              onTap: () {
+                                HapticFeedback.lightImpact();
+                                setState(() {
+                                  sourceSelected = source;
+                                  initializeNewsBySource(source);
+                                });
+                              },
+                              child: Card(
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                color: isSelected ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.secondaryContainer,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+                                  child: Text(source.name,style: TextStyle(color: isSelected ? Theme.of(context).colorScheme.secondaryContainer : Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold,fontSize: 14)),
                                 ),
                               ),
-                              const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                            ],
-                          ),
+                            );
+                          },
                         ),
                       ),
                     ),
-                  );
-                }
-              )
-            ],
+                    const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15,right: 15),
+                  child: Row(
+                    children: [
+                      Expanded(child: showDynamicTitle()),
+                      if(sourceSelected != null)
+                        GestureDetector(
+                          onTap: () {
+                            HapticFeedback.lightImpact();
+                            setState(() {
+                              sourceSelected = null;
+                            });
+                            initializeNews();
+                          },
+                          child: Card(
+                            color: Theme.of(context).colorScheme.secondary,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 4),
+                              child: Text("X",style: TextStyle(color: Theme.of(context).colorScheme.secondaryContainer,fontWeight: FontWeight.bold,fontSize: 15,fontFamily: GoogleFonts.fugazOne().fontFamily)),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                ListView.builder(
+                  itemCount: newsList.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                
+                    final News news = newsList[index];
+                
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                      child: GestureDetector(
+                        onTap: () {
+                          HapticFeedback.lightImpact();
+                          Navigator.push(context, SlideTopRoute(page: NewsDetailScreen(news: news)));
+                        },
+                        child: Card(
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                          color: Theme.of(context).colorScheme.secondaryContainer,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(
+                              children: [
+                                const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(news.title.split(" - ").first,style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold,fontSize: 14)),
+                                    ),
+                                    const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                                    LikeButton(
+                                      onTap: (bool isLiked) => onSaveButtonTapped(news,index),
+                                      size: 25,
+                                      circleColor: CircleColor(
+                                        start: Theme.of(context).colorScheme.secondaryContainer, 
+                                        end: Theme.of(context).colorScheme.secondary
+                                      ),
+                                      bubblesColor: BubblesColor(
+                                        dotPrimaryColor: Theme.of(context).colorScheme.secondary,
+                                        dotSecondaryColor: Theme.of(context).colorScheme.secondary,
+                                      ),
+                                      likeBuilder: (bool isLiked) {
+                                        return Icon(
+                                          newsSaveList[index] ? IconlyBold.bookmark : IconlyLight.bookmark,
+                                          color: Theme.of(context).colorScheme.secondary,
+                                          size: 25,
+                                        );
+                                      }
+                                    ),
+                                  ],
+                                ),
+                                const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                                if(news.imgUrl != null)
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: SizedBox(
+                                      height: 150,
+                                      child: Image.network(news.imgUrl!),
+                                    ),
+                                  ),
+                                const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  child: Row(
+                                    children: [
+                                      Text(news.datePublished,style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold,fontSize: 14)),
+                                      const Spacer(),
+                                      Text(news.source,style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold,fontSize: 14))
+                                    ],
+                                  ),
+                                ),
+                                const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                )
+              ],
+            ),
           ),
         ),
       ),

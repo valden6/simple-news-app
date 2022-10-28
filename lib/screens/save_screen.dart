@@ -73,7 +73,7 @@ class _SaveScreenState extends State<SaveScreen> {
         automaticallyImplyLeading: false,
         title: Align(
           alignment: Alignment.center,
-          child: Text("Mes news sauvegardées",style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 22,fontFamily: GoogleFonts.pacifico().fontFamily)),
+          child: Text("Mes news sauvegardées",style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 22,fontFamily: GoogleFonts.fugazOne().fontFamily)),
         ),
       ),
       body: SingleChildScrollView(
@@ -106,12 +106,13 @@ class _SaveScreenState extends State<SaveScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                     child: GestureDetector(
                       onTap: () {
+                        HapticFeedback.lightImpact();
                         Navigator.push(context, SlideTopRoute(page: NewsDetailScreen(news: news)));
                       },
                       child: Card(
-                        elevation: 2,
+                        elevation: 0,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                        color: Theme.of(context).colorScheme.secondaryVariant,
+                        color: Theme.of(context).colorScheme.secondaryContainer,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Column(
@@ -125,7 +126,7 @@ class _SaveScreenState extends State<SaveScreen> {
                                   const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
                                   GestureDetector(
                                     onTap: () {
-                                      HapticFeedback.heavyImpact();
+                                      HapticFeedback.lightImpact();
                                       StorageService().deleteNewsInStorage(news);
                                       setState(() {
                                         newsSavedList.removeAt(index);

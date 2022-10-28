@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:test_technique/screens/news_screen.dart';
@@ -9,7 +10,7 @@ class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
 
   @override
-  _AppState createState() => _AppState();
+  State<App> createState() => _AppState();
 }
 
 class _AppState extends State<App> {
@@ -24,6 +25,7 @@ class _AppState extends State<App> {
   }
 
   void _onBarItemTap(int index) {
+    HapticFeedback.lightImpact();
     setState(() {
       _selectedIndex = index;
       _pageController.animateToPage(index, duration: const Duration(milliseconds: 250), curve: Curves.fastOutSlowIn);
@@ -55,14 +57,14 @@ class _AppState extends State<App> {
         unselectedFontSize: 13,
         onTap: _onBarItemTap,
         currentIndex: _selectedIndex,
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             label: "News",
-            icon: Icon(Ionicons.newspaper_outline),
+            icon: Icon(_selectedIndex == 0 ? Ionicons.newspaper : Ionicons.newspaper_outline),
           ),
           BottomNavigationBarItem(
             label: "Sauvegarder",
-            icon: Icon(IconlyLight.bookmark,size: 28),
+            icon: Icon(_selectedIndex == 0 ? IconlyLight.bookmark : IconlyBold.bookmark),
           ),
         ],
       ),

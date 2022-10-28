@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
@@ -31,7 +32,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   }
 
   void launchURL(String url) async {
-    if (!await launch(url)) throw 'Could not launch $url';
+    if (!await launchUrl(Uri(path: url))) throw "Could not launch $url";
   }
 
   @override
@@ -44,11 +45,12 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
         automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () {
+            HapticFeedback.lightImpact();
             Navigator.pop(context);
           },
           child: Icon(IconlyLight.arrowDown2,color: Theme.of(context).colorScheme.secondary,size: 30),
         ),
-        title: Text("en détail",style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 22,fontFamily: GoogleFonts.pacifico().fontFamily))
+        title: Text("En détail",style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 22,fontFamily: GoogleFonts.fugazOne().fontFamily))
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -56,9 +58,9 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
           child: GestureDetector(
             onVerticalDragUpdate: (DragUpdateDetails details) => SwipeBack().onVerticalDragDown(context, details),
             child: Card(
-              elevation: 2,
+              elevation: 0,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-              color: Theme.of(context).colorScheme.secondaryVariant,
+              color: Theme.of(context).colorScheme.secondaryContainer,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
@@ -88,33 +90,35 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                       children: [
                         GestureDetector(
                           onTap: () {
+                            HapticFeedback.lightImpact();
                             launchURL(widget.news.url);
                           },
                           child: Card(
                             color: Theme.of(context).colorScheme.secondary,
-                            elevation: 3,
+                            elevation: 0,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)
+                              borderRadius: BorderRadius.circular(12)
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Page de l'article",style: TextStyle(color: Theme.of(context).colorScheme.secondaryVariant,fontWeight: FontWeight.bold,fontSize: 10)),
+                              padding: const EdgeInsets.all(8),
+                              child: Text("Page de l'article",style: TextStyle(color: Theme.of(context).colorScheme.secondaryContainer,fontWeight: FontWeight.bold,fontSize: 12)),
                             ),
                           ),
                         ),
                         GestureDetector(
                           onTap: () {
+                            HapticFeedback.lightImpact();
                             Share.share("Regarde cet article ! \n${widget.news.url}"); 
                           },
                           child: Card(
                             color: Theme.of(context).colorScheme.secondary,
-                            elevation: 3,
+                            elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(13)
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Icon(IconlyLight.send,color: Theme.of(context).colorScheme.secondaryVariant,size: 16),
+                              child: Icon(IconlyLight.send,color: Theme.of(context).colorScheme.secondaryContainer,size: 16),
                             ),
                           ),
                         ),

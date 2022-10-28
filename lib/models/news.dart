@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 part 'news.g.dart';
 
 @HiveType(typeId: 0)
@@ -26,5 +27,17 @@ class News extends HiveObject {
   final String? content;
 
   News(this.title, this.author, this.source, this.url, this.imgUrl, this.datePublished, this.content);
+
+  factory News.fromJson(Map<String,dynamic> json){
+    return News(
+      json["title"],
+      json["author"],
+      json["source"]["name"],
+      json["url"],
+      json["urlToImage"],
+      DateFormat('dd LLLL yyyy HH:mm',"FR").format(DateTime.parse(json["publishedAt"])),
+      json["content"]
+    );
+  }
 
 }

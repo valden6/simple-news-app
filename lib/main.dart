@@ -23,7 +23,7 @@ class _NewsAppState extends State<NewsApp> {
   
   final ThemeData theme = ThemeData(
     primaryColor: Colors.grey[200],
-    fontFamily: GoogleFonts.nunito().fontFamily
+    fontFamily: GoogleFonts.barlow().fontFamily
   );
 
   @override
@@ -31,7 +31,11 @@ class _NewsAppState extends State<NewsApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: theme.copyWith(
-        colorScheme: theme.colorScheme.copyWith(secondary: Colors.black,secondaryVariant: Colors.white)    
+        splashColor: Colors.transparent,
+        colorScheme: theme.colorScheme.copyWith(
+          secondaryContainer: Colors.white,
+          secondary: Colors.black
+        )    
       ),
       home: const App(),
     );
