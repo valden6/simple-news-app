@@ -32,7 +32,10 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   }
 
   void launchURL(String url) async {
-    if (!await launchUrl(Uri(path: url))) throw "Could not launch $url";
+    final Uri finalUrl = Uri.parse(url);
+    if (!await launchUrl(finalUrl)) {
+      throw 'Could not launch $finalUrl';
+    }
   }
 
   @override
