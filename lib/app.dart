@@ -6,7 +6,6 @@ import 'package:simple_news_app/screens/news_screen.dart';
 import 'package:simple_news_app/screens/save_screen.dart';
 
 class App extends StatefulWidget {
-  
   const App({Key? key}) : super(key: key);
 
   @override
@@ -14,7 +13,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-
   final PageController _pageController = PageController();
   int _selectedIndex = 0;
 
@@ -38,20 +36,17 @@ class _AppState extends State<App> {
       backgroundColor: Theme.of(context).primaryColor,
       body: PageView(
         controller: _pageController,
-          onPageChanged: (index) {
-            setState(() => _selectedIndex = index);
-          },
-          children: const <Widget> [
-            NewsScreen(),
-            SaveScreen()
-          ],
+        onPageChanged: (index) {
+          setState(() => _selectedIndex = index);
+        },
+        children: const <Widget>[NewsScreen(), SaveScreen()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: true,
         showUnselectedLabels: true,
         backgroundColor: Theme.of(context).primaryColor,
-        fixedColor: Theme.of(context).colorScheme.secondary, 
+        fixedColor: Theme.of(context).colorScheme.secondary,
         unselectedItemColor: Theme.of(context).colorScheme.secondary,
         selectedFontSize: 13,
         unselectedFontSize: 13,
@@ -70,5 +65,4 @@ class _AppState extends State<App> {
       ),
     );
   }
-
 }

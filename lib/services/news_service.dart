@@ -7,23 +7,21 @@ import 'package:simple_news_app/models/news.dart';
 import 'package:simple_news_app/models/source.dart';
 
 class NewsService {
-
   final String apiKey = Environment.newsApiKeys;
   final String baseUrl = "https://newsapi.org/v2";
 
   Future<Response> get(String pathUrl) async {
-
     Dio dio = Dio();
     Response response = Response(requestOptions: RequestOptions(path: ""));
 
     try {
-      response = await dio.get("$baseUrl$pathUrl&apiKey=$apiKey"); 
+      response = await dio.get("$baseUrl$pathUrl&apiKey=$apiKey");
       log("API Response: ${response.statusCode} ${response.statusMessage}");
-    } on DioError catch (e) {
-      if(e.response != null){
+    } on DioException catch (e) {
+      if (e.response != null) {
         log("API Response: ${e.response!.statusCode} ${e.response!.statusMessage}");
         Map errorData = e.response!.data;
-        if(errorData.containsKey("message")){
+        if (errorData.containsKey("message")) {
           log("Error Response message: ${errorData["message"]}");
         }
       } else {
@@ -40,7 +38,7 @@ class NewsService {
     String body = response.toString();
     Map data = jsonDecode(body);
     for (int i = 0; i < data["articles"].length; i++) {
-      final News newsData = News.fromJson(data["articles"][i]);
+      final News newsData = News.fromJson(json: data["articles"][i]);
       allNews.add(newsData);
     }
 
@@ -53,7 +51,7 @@ class NewsService {
     String body = response.toString();
     Map data = jsonDecode(body);
     for (int i = 0; i < data["articles"].length; i++) {
-      final News newsData = News.fromJson(data["articles"][i]);
+      final News newsData = News.fromJson(json: data["articles"][i]);
       allNews.add(newsData);
     }
 
@@ -66,7 +64,7 @@ class NewsService {
     String body = response.toString();
     Map data = jsonDecode(body);
     for (int i = 0; i < data["articles"].length; i++) {
-      final News newsData = News.fromJson(data["articles"][i]);
+      final News newsData = News.fromJson(json: data["articles"][i]);
       allNews.add(newsData);
     }
 
@@ -79,7 +77,7 @@ class NewsService {
     String body = response.toString();
     Map data = jsonDecode(body);
     for (int i = 0; i < data["articles"].length; i++) {
-      final News newsData = News.fromJson(data["articles"][i]);
+      final News newsData = News.fromJson(json: data["articles"][i]);
       allNews.add(newsData);
     }
 
@@ -88,14 +86,14 @@ class NewsService {
 
   Future<List<News>> getAllNewsBySourceSearch(String query) async {
     final List<News> allNews = [];
-    
+
     final Source? source = await getSourceBySearch(query);
-    if(source != null){
+    if (source != null) {
       Response response = await get("/top-headlines?sources=${source.id}");
       String body = response.toString();
       Map data = jsonDecode(body);
       for (int i = 0; i < data["articles"].length; i++) {
-        final News newsData = News.fromJson(data["articles"][i]);
+        final News newsData = News.fromJson(json: data["articles"][i]);
         allNews.add(newsData);
       }
     }
@@ -104,7 +102,7 @@ class NewsService {
 
   Future<List<Source>> getAllFrenchSources() async {
     final List<Source> allSources = [];
-    
+
     Response response = await get("/top-headlines/sources?country=fr");
     String body = response.toString();
     Map data = jsonDecode(body);
@@ -118,7 +116,7 @@ class NewsService {
   Future<Source?> getSourceBySearch(String query) async {
     final List<Source> allSources = [];
     Source? finalSource;
-    
+
     Response response = await get("/top-headlines/sources?");
     String body = response.toString();
     Map data = jsonDecode(body);
@@ -127,11 +125,10 @@ class NewsService {
       allSources.add(sourceData);
     }
     for (final Source source in allSources) {
-      if(source.name.toLowerCase().replaceAll(" ", "").contains(query.toLowerCase().replaceAll(" ", ""))){
+      if (source.name.toLowerCase().replaceAll(" ", "").contains(query.toLowerCase().replaceAll(" ", ""))) {
         finalSource = source;
       }
     }
     return finalSource;
   }
-  
 }

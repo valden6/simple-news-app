@@ -17,15 +17,13 @@ import 'package:simple_news_app/services/news_service.dart';
 import 'package:simple_news_app/services/storage_service.dart';
 
 class NewsScreen extends StatefulWidget {
-
-  const NewsScreen({ Key? key }) : super(key: key);
+  const NewsScreen({Key? key}) : super(key: key);
 
   @override
   State<NewsScreen> createState() => _NewsScreenState();
 }
 
 class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMixin {
-
   bool keepAlive = true;
   List<News> newsList = [];
   List<Source> sourceList = [];
@@ -57,7 +55,7 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
     super.dispose();
   }
 
-  Future<void> onRefresh() async{
+  Future<void> onRefresh() async {
     await initializeData();
     setState(() {
       query = "";
@@ -66,11 +64,11 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
     refreshController.refreshCompleted();
   }
 
-  Future<void> initializeData() async{
-    if(mounted) {
+  Future<void> initializeData() async {
+    if (mounted) {
       await initializeNews();
     }
-    if(mounted) {
+    if (mounted) {
       await initializeSources();
     }
     animate();
@@ -103,7 +101,7 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
     });
   }
 
-  void initializeSaveNewsList(List<News> newsList){
+  void initializeSaveNewsList(List<News> newsList) {
     final List<bool> saveNews = [];
 
     for (int i = 0; i < newsList.length; i++) {
@@ -125,14 +123,14 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
   Future<void> searchNewsByCriteria() async {
     log("gettin all by search criteria...");
     final List<News> allNews = [];
-    if(criteria == "Titre"){
-      final List<News> allNewsData = await NewsService().getAllNewsByTitleSearch(searchController.text); 
+    if (criteria == "Titre") {
+      final List<News> allNewsData = await NewsService().getAllNewsByTitleSearch(searchController.text);
       allNews.addAll(allNewsData);
-    } else if (criteria == "Source"){
-      final List<News> allNewsData = await NewsService().getAllNewsBySourceSearch(searchController.text); 
+    } else if (criteria == "Source") {
+      final List<News> allNewsData = await NewsService().getAllNewsBySourceSearch(searchController.text);
       allNews.addAll(allNewsData);
     } else {
-      final List<News> allNewsData = await NewsService().getAllFrenchNewsByCategorySearch(searchController.text); 
+      final List<News> allNewsData = await NewsService().getAllFrenchNewsByCategorySearch(searchController.text);
       allNews.addAll(allNewsData);
     }
     initializeSaveNewsList(allNews);
@@ -141,23 +139,22 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
     });
   }
 
-  bool checkIsSourceSelected(Source source){
+  bool checkIsSourceSelected(Source source) {
     bool isSelected = false;
 
-    if(sourceSelected != null && sourceSelected == source){
+    if (sourceSelected != null && sourceSelected == source) {
       isSelected = true;
     }
 
     return isSelected;
   }
 
-  Future<bool> onSaveButtonTapped(News news, int index) async { 
-    
+  Future<bool> onSaveButtonTapped(News news, int index) async {
     HapticFeedback.lightImpact();
 
     bool success = false;
 
-    if(newsSaveList[index]){
+    if (newsSaveList[index]) {
       log("Deleting news from local...");
       StorageService().deleteNewsInStorage(news);
       success = true;
@@ -174,8 +171,7 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
     return success;
   }
 
-  Row showSearchCriteria(BuildContext context){
-
+  Row showSearchCriteria(BuildContext context) {
     Color backgroundColorTitle;
     Color textColorTitle;
     Color backgroundColorSource;
@@ -228,7 +224,7 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
             ),
             child: Padding(
               padding: const EdgeInsets.all(8),
-              child: Center(child: Text("Titre",style: TextStyle(color: textColorTitle,fontSize: 14))),
+              child: Center(child: Text("Titre", style: TextStyle(color: textColorTitle, fontSize: 14))),
             ),
           ),
         ),
@@ -248,7 +244,7 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
             ),
             child: Padding(
               padding: const EdgeInsets.all(8),
-              child: Center(child: Text("Source",style: TextStyle(color: textColorSource,fontSize: 14))),
+              child: Center(child: Text("Source", style: TextStyle(color: textColorSource, fontSize: 14))),
             ),
           ),
         ),
@@ -268,7 +264,7 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
             ),
             child: Padding(
               padding: const EdgeInsets.all(8),
-              child: Center(child: Text("Catégories",style: TextStyle(color: textColorCategory,fontSize: 14))),
+              child: Center(child: Text("Catégories", style: TextStyle(color: textColorCategory, fontSize: 14))),
             ),
           ),
         ),
@@ -276,19 +272,18 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
     );
   }
 
-  Text showDynamicTitle(){
-
+  Text showDynamicTitle() {
     String text = "";
 
-    if(isSearching){
+    if (isSearching) {
       text = "A la une de: $query";
-    } else if(sourceSelected != null){
+    } else if (sourceSelected != null) {
       text = "A la une de ${sourceSelected!.name}";
     } else {
       text = "A la une";
     }
 
-    return Text(text,style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 26,fontFamily: GoogleFonts.fugazOne().fontFamily));
+    return Text(text, style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 26, fontFamily: GoogleFonts.fugazOne().fontFamily));
   }
 
   @override
@@ -306,13 +301,12 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
             bottom: false,
             child: Column(
               children: [
-                if(!isSearching)
-                  Text("Les news",style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 22,fontFamily: GoogleFonts.fugazOne().fontFamily)),
-                if(isSearching)
+                if (!isSearching) Text("Les news", style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 22, fontFamily: GoogleFonts.fugazOne().fontFamily)),
+                if (isSearching)
                   Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 20,right: 60,top: 6),
+                        padding: const EdgeInsets.only(left: 20, right: 60, top: 6),
                         child: Container(
                           height: 40,
                           decoration: BoxDecoration(
@@ -324,7 +318,7 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
                             focusNode: focusNodeSearch,
                             controller: searchController,
                             keyboardType: TextInputType.text,
-                            style: TextStyle(fontSize: 16,color: Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold),
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                               enabledBorder: OutlineInputBorder(
@@ -336,17 +330,17 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
                                 borderSide: BorderSide(color: Theme.of(context).primaryColor),
                               ),
                               hintText: "Rechercher",
-                              hintStyle: TextStyle(fontSize: 16,color: Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold),
+                              hintStyle: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold),
                               suffixIcon: GestureDetector(
                                 onTap: () {
                                   HapticFeedback.lightImpact();
-                                  if(isSearching){
+                                  if (isSearching) {
                                     setState(() {
                                       searchController.text = "";
                                     });
                                   }
                                 },
-                                child: Icon(IconlyLight.closeSquare, size: 20,color: Theme.of(context).colorScheme.secondary),
+                                child: Icon(IconlyLight.closeSquare, size: 20, color: Theme.of(context).colorScheme.secondary),
                               ),
                             ),
                           ),
@@ -357,7 +351,7 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
                         padding: const EdgeInsets.symmetric(horizontal: 25),
                         child: Row(
                           children: [
-                            Text("Rechercher par",style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 16,fontWeight: FontWeight.bold)),
+                            Text("Rechercher par", style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 16, fontWeight: FontWeight.bold)),
                             const Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
                             showSearchCriteria(context)
                           ],
@@ -372,7 +366,7 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
             GestureDetector(
               onTap: () {
                 HapticFeedback.lightImpact();
-                if(isSearching && searchController.text.isNotEmpty){
+                if (isSearching && searchController.text.isNotEmpty) {
                   searchNewsByCriteria();
                   setState(() {
                     query = searchController.text;
@@ -386,7 +380,7 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 20),
-                child: Icon(Ionicons.search,color: Theme.of(context).colorScheme.secondary,size: 30),
+                child: Icon(Ionicons.search, color: Theme.of(context).colorScheme.secondary, size: 30),
               ),
             ),
           ],
@@ -397,11 +391,11 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
         onRefresh: onRefresh,
         header: ClassicHeader(
           textStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
-          releaseIcon: Icon(Ionicons.refresh_circle_outline,color: Theme.of(context).colorScheme.secondary,size: 30),
-          idleIcon: Icon(Ionicons.arrow_down_circle_outline,color: Theme.of(context).colorScheme.secondary,size: 30),
+          releaseIcon: Icon(Ionicons.refresh_circle_outline, color: Theme.of(context).colorScheme.secondary, size: 30),
+          idleIcon: Icon(Ionicons.arrow_down_circle_outline, color: Theme.of(context).colorScheme.secondary, size: 30),
           refreshingIcon: const CupertinoActivityIndicator(),
-          completeIcon: Icon(Ionicons.checkmark_circle_outline,color: Theme.of(context).colorScheme.secondary,size: 30),
-          failedIcon: Icon(Ionicons.close_circle_outline,color: Theme.of(context).colorScheme.secondary,size: 30),
+          completeIcon: Icon(Ionicons.checkmark_circle_outline, color: Theme.of(context).colorScheme.secondary, size: 30),
+          failedIcon: Icon(Ionicons.close_circle_outline, color: Theme.of(context).colorScheme.secondary, size: 30),
           releaseText: "",
           refreshingText: "",
           completeText: "",
@@ -413,60 +407,59 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
             duration: AnimationSetting.animationFadeInOutDuration,
             child: Column(
               children: [
-                if(!isSearching)
-                Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: Text("Sources",style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 26,fontFamily: GoogleFonts.fugazOne().fontFamily)),
-                      ),
-                    ),
-                    const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: SizedBox(
-                        height: 50,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: sourceList.length,
-                          itemBuilder: (context, index) {
-                                                      
-                            final Source source = sourceList[index];
-                            final bool isSelected = checkIsSourceSelected(source);
-          
-                            return GestureDetector(
-                              onTap: () {
-                                HapticFeedback.lightImpact();
-                                setState(() {
-                                  sourceSelected = source;
-                                  initializeNewsBySource(source);
-                                });
-                              },
-                              child: Card(
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                                color: isSelected ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.secondaryContainer,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
-                                  child: Text(source.name,style: TextStyle(color: isSelected ? Theme.of(context).colorScheme.secondaryContainer : Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold,fontSize: 14)),
-                                ),
-                              ),
-                            );
-                          },
+                if (!isSearching)
+                  Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text("Sources", style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 26, fontFamily: GoogleFonts.fugazOne().fontFamily)),
                         ),
                       ),
-                    ),
-                    const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                  ],
-                ),
+                      const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: SizedBox(
+                          height: 50,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: sourceList.length,
+                            itemBuilder: (context, index) {
+                              final Source source = sourceList[index];
+                              final bool isSelected = checkIsSourceSelected(source);
+
+                              return GestureDetector(
+                                onTap: () {
+                                  HapticFeedback.lightImpact();
+                                  setState(() {
+                                    sourceSelected = source;
+                                    initializeNewsBySource(source);
+                                  });
+                                },
+                                child: Card(
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                  color: isSelected ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.secondaryContainer,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                    child: Text(source.name, style: TextStyle(color: isSelected ? Theme.of(context).colorScheme.secondaryContainer : Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold, fontSize: 14)),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                    ],
+                  ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 15,right: 15),
+                  padding: const EdgeInsets.only(left: 15, right: 15),
                   child: Row(
                     children: [
                       Expanded(child: showDynamicTitle()),
-                      if(sourceSelected != null)
+                      if (sourceSelected != null)
                         GestureDetector(
                           onTap: () {
                             HapticFeedback.lightImpact();
@@ -478,12 +471,10 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
                           child: Card(
                             color: Theme.of(context).colorScheme.secondary,
                             elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)
-                            ),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 4),
-                              child: Text("X",style: TextStyle(color: Theme.of(context).colorScheme.secondaryContainer,fontWeight: FontWeight.bold,fontSize: 15,fontFamily: GoogleFonts.fugazOne().fontFamily)),
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              child: Text("X", style: TextStyle(color: Theme.of(context).colorScheme.secondaryContainer, fontWeight: FontWeight.bold, fontSize: 15, fontFamily: GoogleFonts.fugazOne().fontFamily)),
                             ),
                           ),
                         ),
@@ -491,85 +482,79 @@ class _NewsScreenState extends State<NewsScreen> with AutomaticKeepAliveClientMi
                   ),
                 ),
                 ListView.builder(
-                  itemCount: newsList.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                
-                    final News news = newsList[index];
-                
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                      child: GestureDetector(
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          Navigator.push(context, SlideTopRoute(page: NewsDetailScreen(news: news)));
-                        },
-                        child: Card(
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                          color: Theme.of(context).colorScheme.secondaryContainer,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Column(
-                              children: [
-                                const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(news.title.split(" - ").first,style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold,fontSize: 14)),
-                                    ),
-                                    const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-                                    LikeButton(
-                                      onTap: (bool isLiked) => onSaveButtonTapped(news,index),
-                                      size: 25,
-                                      circleColor: CircleColor(
-                                        start: Theme.of(context).colorScheme.secondaryContainer, 
-                                        end: Theme.of(context).colorScheme.secondary
-                                      ),
-                                      bubblesColor: BubblesColor(
-                                        dotPrimaryColor: Theme.of(context).colorScheme.secondary,
-                                        dotSecondaryColor: Theme.of(context).colorScheme.secondary,
-                                      ),
-                                      likeBuilder: (bool isLiked) {
-                                        return Icon(
-                                          newsSaveList[index] ? IconlyBold.bookmark : IconlyLight.bookmark,
-                                          color: Theme.of(context).colorScheme.secondary,
-                                          size: 25,
-                                        );
-                                      }
-                                    ),
-                                  ],
-                                ),
-                                const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                                if(news.imgUrl != null)
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: SizedBox(
-                                      height: 150,
-                                      child: Image.network(news.imgUrl!),
-                                    ),
-                                  ),
-                                const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                                  child: Row(
+                    itemCount: newsList.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      final News news = newsList[index];
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: GestureDetector(
+                          onTap: () {
+                            HapticFeedback.lightImpact();
+                            Navigator.push(context, SlideTopRoute(page: NewsDetailScreen(news: news)));
+                          },
+                          child: Card(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                            color: Theme.of(context).colorScheme.secondaryContainer,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Column(
+                                children: [
+                                  const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                                  Row(
                                     children: [
-                                      Text(news.datePublished,style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold,fontSize: 14)),
-                                      const Spacer(),
-                                      Text(news.source,style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold,fontSize: 14))
+                                      Expanded(
+                                        child: Text(news.title.split(" - ").first, style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold, fontSize: 14)),
+                                      ),
+                                      const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                                      LikeButton(
+                                          onTap: (bool isLiked) => onSaveButtonTapped(news, index),
+                                          size: 25,
+                                          circleColor: CircleColor(start: Theme.of(context).colorScheme.secondaryContainer, end: Theme.of(context).colorScheme.secondary),
+                                          bubblesColor: BubblesColor(
+                                            dotPrimaryColor: Theme.of(context).colorScheme.secondary,
+                                            dotSecondaryColor: Theme.of(context).colorScheme.secondary,
+                                          ),
+                                          likeBuilder: (bool isLiked) {
+                                            return Icon(
+                                              newsSaveList[index] ? IconlyBold.bookmark : IconlyLight.bookmark,
+                                              color: Theme.of(context).colorScheme.secondary,
+                                              size: 25,
+                                            );
+                                          }),
                                     ],
                                   ),
-                                ),
-                                const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                              ],
+                                  const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                                  if (news.imgUrl != null)
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: SizedBox(
+                                        height: 150,
+                                        child: Image.network(news.imgUrl!),
+                                      ),
+                                    ),
+                                  const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                                    child: Row(
+                                      children: [
+                                        Text(news.datePublished, style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold, fontSize: 14)),
+                                        const Spacer(),
+                                        Text(news.source, style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold, fontSize: 14))
+                                      ],
+                                    ),
+                                  ),
+                                  const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  }
-                )
+                      );
+                    })
               ],
             ),
           ),

@@ -17,13 +17,13 @@ class NewsAdapter extends TypeAdapter<News> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return News(
-      fields[0] as String,
-      fields[1] as String?,
-      fields[2] as String,
-      fields[3] as String,
-      fields[4] as String?,
-      fields[5] as String,
-      fields[6] as String?,
+      title: fields[0] as String,
+      author: fields[1] as String?,
+      source: fields[2] as String,
+      url: fields[3] as String,
+      imgUrl: fields[4] as String?,
+      datePublished: fields[5] as String,
+      content: fields[6] as String?,
     );
   }
 
@@ -51,9 +51,5 @@ class NewsAdapter extends TypeAdapter<News> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is NewsAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+  bool operator ==(Object other) => identical(this, other) || other is NewsAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

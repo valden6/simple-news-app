@@ -1,5 +1,4 @@
 class Source {
-
   final String name;
   final String id;
   final String description;
@@ -9,7 +8,7 @@ class Source {
 
   Source(this.name, this.id, this.description, this.url, this.category, this.country);
 
-  factory Source.fromJson(Map<String,dynamic> json){
+  factory Source.fromJson(Map<String, dynamic> json) {
     return Source(
       json["name"],
       json["id"],
@@ -19,5 +18,4 @@ class Source {
       json["country"],
     );
   }
-
 }
